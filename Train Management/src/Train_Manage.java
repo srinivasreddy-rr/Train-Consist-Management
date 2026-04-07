@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 class Bogie {
@@ -13,7 +14,7 @@ class Bogie {
 
     @Override
     public String toString() {
-        return name + " -> Capacity: " + capacity;
+        return name + "(" + capacity + ")";
     }
 }
 
@@ -24,17 +25,17 @@ public class Train_Manage {
         // Step 1: Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Step 2: Create original bogie list (same as UC7)
+        // Step 2: Create bogie list
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
+        bogies.add(new Bogie("Sleeper", 70));
         bogies.add(new Bogie("First Class", 40));
-        bogies.add(new Bogie("Luxury", 80)); // extra for testing multiple matches
+        bogies.add(new Bogie("AC Chair", 65));
 
-        // Step 3: Convert to stream + filter
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)   // condition
-                .collect(Collectors.toList()); // collect into new list
+        // Step 3: Stream + groupingBy
+        Map<String, List<Bogie>> groupedBogies = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
         // Step 4: Display original list (unchanged)
         System.out.println("Original Bogies:");
@@ -42,10 +43,10 @@ public class Train_Manage {
             System.out.println(b);
         }
 
-        // Step 5: Display filtered list
-        System.out.println("\nFiltered Bogies (capacity > 60):");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
+        // Step 5: Display grouped result
+        System.out.println("\nGrouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
 
         // Program continues...
