@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Bogie {
     String name;
@@ -24,20 +24,27 @@ public class Train_Manage {
         // Step 1: Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Step 2: Create List of Bogie objects
+        // Step 2: Create original bogie list (same as UC7)
         List<Bogie> bogies = new ArrayList<>();
-
-        // Step 3: Add bogies
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
         bogies.add(new Bogie("First Class", 40));
+        bogies.add(new Bogie("Luxury", 80)); // extra for testing multiple matches
 
-        // Step 4: Sort using Comparator (by capacity)
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+        // Step 3: Convert to stream + filter
+        List<Bogie> filteredBogies = bogies.stream()
+                .filter(b -> b.capacity > 60)   // condition
+                .collect(Collectors.toList()); // collect into new list
 
-        // Step 5: Display sorted bogies
-        System.out.println("Sorted Bogies by Capacity:");
+        // Step 4: Display original list (unchanged)
+        System.out.println("Original Bogies:");
         for (Bogie b : bogies) {
+            System.out.println(b);
+        }
+
+        // Step 5: Display filtered list
+        System.out.println("\nFiltered Bogies (capacity > 60):");
+        for (Bogie b : filteredBogies) {
             System.out.println(b);
         }
 
