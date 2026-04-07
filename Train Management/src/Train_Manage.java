@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 class Bogie {
     String name;
@@ -25,29 +23,26 @@ public class Train_Manage {
         // Step 1: Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Step 2: Create bogie list
+        // Step 2: Create bogie list (reuse from previous UC)
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("Sleeper", 70));
         bogies.add(new Bogie("First Class", 40));
-        bogies.add(new Bogie("AC Chair", 65));
+        bogies.add(new Bogie("Luxury", 80));
 
-        // Step 3: Stream + groupingBy
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        // Step 3: Stream -> map -> reduce
+        int totalCapacity = bogies.stream()
+                .map(b -> b.capacity)        // extract capacity
+                .reduce(0, Integer::sum);   // sum all capacities
 
         // Step 4: Display original list (unchanged)
-        System.out.println("Original Bogies:");
+        System.out.println("Bogies:");
         for (Bogie b : bogies) {
             System.out.println(b);
         }
 
-        // Step 5: Display grouped result
-        System.out.println("\nGrouped Bogies:");
-        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        // Step 5: Display total seating capacity
+        System.out.println("\nTotal Seating Capacity: " + totalCapacity);
 
         // Program continues...
     }
